@@ -1,4 +1,5 @@
 import * as github from '@actions/github'
+import * as core from '@actions/core'
 
 export async function createReleaseDraft(
     versionTag: string,
@@ -12,12 +13,12 @@ export async function createReleaseDraft(
         repo: github.context.repo.repo,
         tag_name: versionTag,
         name: versionTag.removePrefix(versionTag),
-        body: markdown.toUnorderedList(changeLog),
+        body: null,
         prerelease: versionTag.isPrerelease(versionTag),
         draft: true
     })
 
-    if (response.status != 201) {
+    if (response.status !== 201) {
         throw new Error(`Failed to create the release: ${response.status}`)
     }
 
